@@ -37,12 +37,12 @@ class App extends Component {
         switch (pet) {
             case 'dog':
                 this.setState({
-                    dogPeople: [...dogPeople.slice(), user],
+                    dogPeople: [...dogPeople, user],
                 });
                 break;
             case 'cat':
                 this.setState({
-                    catPeople: [...catPeople.slice(), user],
+                    catPeople: [...catPeople, user],
                 });
                 break;
 
