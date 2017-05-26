@@ -1,0 +1,17 @@
+.UserList {
+    margin: 20px;
+}
+
+.UserList__title {
+    text-align: center;
+}
+
+.UserList__list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.UserList__item {
+    margin: 5px;
+}

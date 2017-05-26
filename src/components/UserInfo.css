@@ -1,0 +1,23 @@
+.UserInfo {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 5px;
+    border: 1px solid #888;
+}
+
+.UserInfo__name {
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.UserInfo__img {
+    margin: 0 auto;
+    display: block;
+}
+
+.UserInfo__img--hold {
+    width: 128px;
+    height: 128px;
+    background-color: #666;
+}
