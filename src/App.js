@@ -12,6 +12,8 @@ class App extends Component {
         user: null,
         dogPeople: [],
         catPeople: [],
+
+        // To test latency/loading state, add a delay
         delay: 0,
     };
 
