@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
-import App from './App';
+import App from '../components/App';
 
-import { commaText } from './helpers/text';
+import { commaText } from '../helpers/text';
 
 class AppContainer extends Component {
     state = {

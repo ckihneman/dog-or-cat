@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Flex from './components/Flex';
-import Title from './components/Title';
-import UserInfo from './components/UserInfo';
-import UserList from './components/UserList';
-import PersonButton from './components/PersonButton';
+import Flex from './Flex';
+import Title from './Title';
+import UserInfo from './UserInfo';
+import UserList from './UserList';
+import PersonButton from './PersonButton';
 
 export default function App({
     isLoading,
