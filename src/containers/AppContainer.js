@@ -8,7 +8,9 @@ import App from '../components/App';
 
 class AppAsync extends Component {
     componentDidMount() {
-        this.props.dispatch(fetchUser());
+        if (!this.props.user) {
+            this.props.dispatch(fetchUser());
+        }
     }
 
     handleButtonClick = id => {
