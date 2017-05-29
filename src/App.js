@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
 
+import Flex from './components/Flex';
 import Title from './components/Title';
 import UserInfo from './components/UserInfo';
 import UserList from './components/UserList';
-import Flex from './components/Flex';
 import PersonButton from './components/PersonButton';
+
+import { commaText } from './helpers/text';
 
 class App extends Component {
     state = {
         isLoading: false,
         user: null,
-        dogPeople: [],
-        catPeople: [],
+        types: [
+            {
+                id: 'dog',
+                name: 'Dog',
+                people: [],
+            },
+            {
+                id: 'cat',
+                name: 'Cat',
+                people: [],
+            },
+        ],
 
         // To test latency/loading state, add a delay
         delay: 0,
@@ -34,23 +46,19 @@ class App extends Component {
     };
 
     handlePetSelect = pet => {
-        const { user, dogPeople, catPeople } = this.state;
+        const { user, types } = this.state;
 
-        switch (pet) {
-            case 'dog':
-                this.setState({
-                    dogPeople: [...dogPeople, user],
-                });
-                break;
-            case 'cat':
-                this.setState({
-                    catPeople: [...catPeople, user],
-                });
-                break;
-
-            default:
-                break;
-        }
+        this.setState({
+            types: types.map(type => {
+                if (pet !== type.id) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    people: [...type.people, user],
+                };
+            }),
+        });
 
         this.getUserData();
     };
@@ -60,33 +68,45 @@ class App extends Component {
     }
 
     render() {
-        const { isLoading, user, dogPeople, catPeople } = this.state;
+        const { isLoading, user, types } = this.state;
+        const namesText = commaText(types.map(type => type.name), 'or');
+
+        let title;
+        if (!user || isLoading) {
+            title = `Finding ${namesText} people...`;
+        } else {
+            title = `Is ${user.name.first} a ${namesText} person?`;
+        }
 
         if (!user) {
-            return <Title title="Finding dog and cat people..." />;
+            return <Title title={title} />;
         }
 
         return (
             <div>
-                <Title title="What kind of person is..." />
+                <Title title={title} />
                 <UserInfo user={user} imageSize="large" isLoading={isLoading} />
                 <Flex>
-                    <PersonButton
-                        text="Dog Person"
-                        onClick={() => this.handlePetSelect('dog')}
-                        className="PersonButton--dog"
-                        disabled={isLoading}
-                    />
-                    <PersonButton
-                        text="Cat Person"
-                        onClick={() => this.handlePetSelect('cat')}
-                        className="PersonButton--cat"
-                        disabled={isLoading}
-                    />
+                    {types.map(type => {
+                        return (
+                            <PersonButton
+                                key={type.id}
+                                text={`${type.name} Person`}
+                                onClick={() => this.handlePetSelect(type.id)}
+                                className={`PersonButton--${type.id}`}
+                                disabled={isLoading}
+                            />
+                        );
+                    })}
                 </Flex>
                 <Flex>
-                    <UserList title="Dog People" users={dogPeople} />
-                    <UserList title="Cat People" users={catPeople} />
+                    {types.map(type => (
+                        <UserList
+                            key={type.id}
+                            title={`${type.name} People`}
+                            users={type.people}
+                        />
+                    ))}
                 </Flex>
             </div>
         );
