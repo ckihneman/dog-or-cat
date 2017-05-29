@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { fetchUser, addPerson } from '../actions';
@@ -41,6 +42,12 @@ class AppContainer extends Component {
         );
     }
 }
+
+AppContainer.propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    user: PropTypes.any,
+    types: PropTypes.array.isRequired,
+};
 
 function mapStateToProps(state) {
     return {
