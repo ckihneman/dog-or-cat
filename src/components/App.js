@@ -22,17 +22,15 @@ export default function App({
             <Title title={title} />
             <UserInfo user={user} imageSize="large" isLoading={isLoading} />
             <Flex>
-                {types.map(type => {
-                    return (
-                        <PersonButton
-                            key={type.id}
-                            text={`${type.name} Person`}
-                            onClick={() => handleButtonClick(type.id)}
-                            className={`PersonButton--${type.id}`}
-                            disabled={isLoading}
-                        />
-                    );
-                })}
+                {types.map(type => (
+                    <PersonButton
+                        key={type.id}
+                        text={`${type.name} Person`}
+                        onClick={() => handleButtonClick(type.id)}
+                        className={`PersonButton--${type.id}`}
+                        disabled={isLoading}
+                    />
+                ))}
             </Flex>
             <Flex>
                 {types.map(type => (
