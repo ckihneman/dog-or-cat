@@ -6,7 +6,7 @@ import { commaText } from '../helpers/text';
 
 import App from '../components/App';
 
-class AppAsync extends Component {
+class AppContainer extends Component {
     componentDidMount() {
         if (!this.props.user) {
             this.props.dispatch(fetchUser());
@@ -50,4 +50,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(AppAsync);
+export default connect(mapStateToProps)(AppContainer);
