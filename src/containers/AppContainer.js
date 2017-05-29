@@ -1,75 +1,24 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { fetchUser, addPerson } from '../actions';
+import { commaText } from '../helpers/text';
 
 import App from '../components/App';
 
-import { commaText } from '../helpers/text';
-
-class AppContainer extends Component {
-    state = {
-        isLoading: false,
-        user: null,
-        types: [
-            {
-                id: 'dog',
-                name: 'Dog',
-                people: [],
-            },
-            {
-                id: 'cat',
-                name: 'Cat',
-                people: [],
-            },
-            {
-                id: 'rat',
-                name: 'Rat',
-                people: [],
-            },
-        ],
-
-        // To test latency/loading state, add a delay
-        delay: 0,
-    };
-
-    getUserData = () => {
-        this.setState({
-            isLoading: true,
-        });
-        fetch('https://randomuser.me/api/')
-            .then(data => data.json())
-            .then(data => {
-                setTimeout(() => {
-                    this.setState({
-                        user: data.results[0],
-                        isLoading: false,
-                    });
-                }, this.state.delay);
-            });
-    };
-
-    handlePetSelect = pet => {
-        const { user, types } = this.state;
-
-        this.setState({
-            types: types.map(type => {
-                if (pet !== type.id) {
-                    return type;
-                }
-                return {
-                    ...type,
-                    people: [...type.people, user],
-                };
-            }),
-        });
-
-        this.getUserData();
-    };
-
+class AppAsync extends Component {
     componentDidMount() {
-        this.getUserData();
+        this.props.dispatch(fetchUser());
     }
 
+    handleButtonClick = id => {
+        const { dispatch, user } = this.props;
+        dispatch(addPerson(user, id));
+        dispatch(fetchUser());
+    };
+
     render() {
-        const { isLoading, user, types } = this.state;
+        const { isLoading, user, types } = this.props;
         const namesText = commaText(types.map(type => type.name), 'or');
 
         let title;
@@ -85,10 +34,18 @@ class AppContainer extends Component {
                 user={user}
                 types={types}
                 title={title}
-                handlePetSelect={this.handlePetSelect}
+                handleButtonClick={this.handleButtonClick}
             />
         );
     }
 }
 
-export default AppContainer;
+function mapStateToProps(state) {
+    return {
+        isLoading: state.user.isFetching,
+        user: state.user.data,
+        types: state.types,
+    };
+}
+
+export default connect(mapStateToProps)(AppAsync);
