@@ -23,6 +23,11 @@ class App extends Component {
                 name: 'Cat',
                 people: [],
             },
+            {
+                id: 'rat',
+                name: 'Rat',
+                people: [],
+            },
         ],
 
         // To test latency/loading state, add a delay
