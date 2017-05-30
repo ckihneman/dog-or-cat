@@ -11,7 +11,7 @@ export default function App({
     user,
     types,
     title,
-    handleButtonClick,
+    handleClick,
 }) {
     if (!user) {
         return <Title title={title} />;
@@ -26,7 +26,7 @@ export default function App({
                     <PersonButton
                         key={type.id}
                         text={`${type.name} Person`}
-                        onClick={() => handleButtonClick(type.id)}
+                        onClick={() => handleClick(type.id)}
                         className={`PersonButton--${type.id}`}
                         disabled={isLoading}
                     />

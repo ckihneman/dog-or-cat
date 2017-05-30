@@ -14,7 +14,7 @@ class AppContainer extends Component {
         }
     }
 
-    handleButtonClick = id => {
+    addUserById = id => {
         const { dispatch, user } = this.props;
         dispatch(addPerson(user, id));
         dispatch(fetchUser());
@@ -37,7 +37,7 @@ class AppContainer extends Component {
                 user={user}
                 types={types}
                 title={title}
-                handleButtonClick={this.handleButtonClick}
+                handleClick={this.addUserById}
             />
         );
     }
