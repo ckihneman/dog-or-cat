@@ -1,15 +1,16 @@
 import { combineReducers } from 'redux';
 
-import { REQUEST_USER, RECEIVE_USER, ADD_PERSON } from './actions';
+import { REQUEST_USER, RECEIVE_USER, ADD_USER } from './actions';
 
-function user(
+function users(
     state = {
         isFetching: false,
-        data: null,
+        currentUserId: null,
+        byId: {},
     },
-    action
+    { type, user }
 ) {
-    switch (action.type) {
+    switch (type) {
         case REQUEST_USER:
             return {
                 ...state,
@@ -18,8 +19,12 @@ function user(
 
         case RECEIVE_USER:
             return {
-                data: action.user,
                 isFetching: false,
+                currentUserId: user.email,
+                byId: {
+                    ...state.byId,
+                    [user.email]: user,
+                },
             };
 
         default:
@@ -28,36 +33,32 @@ function user(
 }
 
 function types(
-    state = [
-        {
-            id: 'dog',
+    state = {
+        dog: {
             name: 'Dog',
-            people: [],
+            userIds: [],
         },
-        {
-            id: 'cat',
+        cat: {
             name: 'Cat',
-            people: [],
+            userIds: [],
         },
-        {
-            id: 'rat',
+        rat: {
             name: 'Rat',
-            people: [],
+            userIds: [],
         },
-    ],
-    action
+    },
+    { type, userId, id }
 ) {
-    switch (action.type) {
-        case ADD_PERSON:
-            return state.map(type => {
-                if (action.id !== type.id) {
-                    return type;
-                }
-                return {
-                    ...type,
-                    people: [...type.people, action.user],
-                };
-            });
+    switch (type) {
+        case ADD_USER:
+            const entity = state[id];
+            return {
+                ...state,
+                [id]: {
+                    ...entity,
+                    userIds: [...entity.userIds, userId],
+                },
+            };
 
         default:
             return state;
@@ -65,7 +66,7 @@ function types(
 }
 
 const rootReducer = combineReducers({
-    user,
+    users,
     types,
 });
 

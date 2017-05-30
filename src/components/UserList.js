@@ -4,16 +4,19 @@ import UserInfo from './UserInfo';
 
 import './UserList.css';
 
-export default function UserList({ users, title }) {
+export default function UserList({ userIds, users, title }) {
     let userNodes;
-    if (!users.length) {
-        userNodes = <li key={title}>No one yet...</li>;
+    if (!userIds.length) {
+        userNodes = <li>No one yet...</li>;
     } else {
-        userNodes = users.map(user => (
-            <li className="UserList__item" key={user.email}>
-                <UserInfo user={user} />
-            </li>
-        ));
+        userNodes = userIds.map(userId => {
+            const user = users[userId];
+            return (
+                <li className="UserList__item" key={userId}>
+                    <UserInfo user={user} />
+                </li>
+            );
+        });
     }
 
     return (

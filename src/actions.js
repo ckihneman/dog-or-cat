@@ -1,6 +1,6 @@
 export const REQUEST_USER = 'REQUEST_USER';
 export const RECEIVE_USER = 'RECEIVE_USER';
-export const ADD_PERSON = 'ADD_PERSON';
+export const ADD_USER = 'ADD_USER';
 
 function requestUser() {
     return {
@@ -27,10 +27,10 @@ export function fetchUser() {
     };
 }
 
-export function addPerson(user, id) {
+export function addUser(userId, id) {
     return {
-        type: ADD_PERSON,
-        user,
+        type: ADD_USER,
+        userId,
         id,
     };
 }

@@ -9,6 +9,7 @@ import PersonButton from './PersonButton';
 export default function App({
     isLoading,
     user,
+    users,
     types,
     title,
     handleClick,
@@ -22,24 +23,31 @@ export default function App({
             <Title title={title} />
             <UserInfo user={user} imageSize="large" isLoading={isLoading} />
             <Flex>
-                {types.map(type => (
-                    <PersonButton
-                        key={type.id}
-                        text={`${type.name} Person`}
-                        onClick={() => handleClick(type.id)}
-                        className={`PersonButton--${type.id}`}
-                        disabled={isLoading}
-                    />
-                ))}
+                {Object.keys(types).map(typeId => {
+                    const type = types[typeId];
+                    return (
+                        <PersonButton
+                            key={typeId}
+                            text={`${type.name} Person`}
+                            onClick={() => handleClick(typeId)}
+                            className={`PersonButton--${typeId}`}
+                            disabled={isLoading}
+                        />
+                    );
+                })}
             </Flex>
             <Flex>
-                {types.map(type => (
-                    <UserList
-                        key={type.id}
-                        title={`${type.name} People`}
-                        users={type.people}
-                    />
-                ))}
+                {Object.keys(types).map(typeId => {
+                    const type = types[typeId];
+                    return (
+                        <UserList
+                            key={typeId}
+                            title={`${type.name} People`}
+                            userIds={type.userIds}
+                            users={users}
+                        />
+                    );
+                })}
             </Flex>
         </div>
     );
