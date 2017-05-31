@@ -47,7 +47,7 @@ export default function App({
                             userIds={type.userIds}
                             users={users}
                             id={typeId}
-                            onClickRemove={handleClickRemove}
+                            handleClickRemove={handleClickRemove}
                         />
                     );
                 })}

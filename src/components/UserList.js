@@ -4,7 +4,7 @@ import UserInfo from './UserInfo';
 
 import './UserList.css';
 
-export default function UserList({ userIds, users, title, id, onClickRemove }) {
+export default function UserList({ userIds, users, title, id, handleClickRemove }) {
     let userNodes;
     if (!userIds.length) {
         userNodes = <li>No one yet...</li>;
@@ -13,7 +13,7 @@ export default function UserList({ userIds, users, title, id, onClickRemove }) {
             const user = users[userId];
             return (
                 <li className="UserList__item" key={userId}>
-                    <button onClick={() => onClickRemove(userId, id)}>
+                    <button onClick={() => handleClickRemove(userId, id)}>
                         Remove
                     </button>
                     <UserInfo user={user} />
