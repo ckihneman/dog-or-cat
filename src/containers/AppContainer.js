@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { fetchUser, addUser, removeUser } from '../actions';
-import { commaText } from '../helpers/text';
 
 import App from '../components/App';
 
@@ -26,27 +25,9 @@ class AppContainer extends Component {
     };
 
     render() {
-        const { isLoading, currentUserId, users, types } = this.props;
-        const currentUser = users[currentUserId];
-        const namesText = commaText(
-            Object.keys(types).map(type => types[type].name),
-            'or'
-        );
-
-        let title;
-        if (!currentUser || isLoading) {
-            title = `Finding ${namesText} people...`;
-        } else {
-            title = `Is ${currentUser.name.first} a ${namesText} person?`;
-        }
-
         return (
             <App
-                isLoading={isLoading}
-                user={currentUser}
-                users={users}
-                types={types}
-                title={title}
+                {...this.props}
                 handleClickAdd={this.addCurrentUserToType}
                 handleClickRemove={this.removeUserFromType}
             />

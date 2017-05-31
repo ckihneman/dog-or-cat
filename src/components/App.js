@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { commaText } from '../helpers/text';
+
 import Flex from './Flex';
 import Title from './Title';
 import UserInfo from './UserInfo';
@@ -8,21 +10,37 @@ import PersonButton from './PersonButton';
 
 export default function App({
     isLoading,
-    user,
+    currentUserId,
     users,
     types,
-    title,
     handleClickAdd,
     handleClickRemove,
 }) {
-    if (!user) {
+    const currentUser = users[currentUserId];
+    const namesText = commaText(
+        Object.keys(types).map(type => types[type].name),
+        'or'
+    );
+
+    let title;
+    if (!currentUser || isLoading) {
+        title = `Finding ${namesText} people...`;
+    } else {
+        title = `Is ${currentUser.name.first} a ${namesText} person?`;
+    }
+
+    if (!currentUser) {
         return <Title title={title} />;
     }
 
     return (
         <div>
             <Title title={title} />
-            <UserInfo user={user} imageSize="large" isLoading={isLoading} />
+            <UserInfo
+                user={currentUser}
+                imageSize="large"
+                isLoading={isLoading}
+            />
             <Flex>
                 {Object.keys(types).map(typeId => {
                     const type = types[typeId];
