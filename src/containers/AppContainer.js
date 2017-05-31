@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { fetchUser, addPerson } from '../actions';
+import { fetchUser, addUser } from '../actions';
 import { commaText } from '../helpers/text';
 
 import App from '../components/App';
@@ -14,30 +14,35 @@ class AppContainer extends Component {
         }
     }
 
-    handleButtonClick = id => {
-        const { dispatch, user } = this.props;
-        dispatch(addPerson(user, id));
+    addUserById = id => {
+        const { dispatch, currentUserId } = this.props;
+        dispatch(addUser(currentUserId, id));
         dispatch(fetchUser());
     };
 
     render() {
-        const { isLoading, user, types } = this.props;
-        const namesText = commaText(types.map(type => type.name), 'or');
+        const { isLoading, currentUserId, users, types } = this.props;
+        const currentUser = users[currentUserId];
+        const namesText = commaText(
+            Object.keys(types).map(type => types[type].name),
+            'or'
+        );
 
         let title;
-        if (!user || isLoading) {
+        if (!currentUser || isLoading) {
             title = `Finding ${namesText} people...`;
         } else {
-            title = `Is ${user.name.first} a ${namesText} person?`;
+            title = `Is ${currentUser.name.first} a ${namesText} person?`;
         }
 
         return (
             <App
                 isLoading={isLoading}
-                user={user}
+                user={currentUser}
+                users={users}
                 types={types}
                 title={title}
-                handleButtonClick={this.handleButtonClick}
+                handleClick={this.addUserById}
             />
         );
     }
@@ -45,15 +50,17 @@ class AppContainer extends Component {
 
 AppContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
-    user: PropTypes.any,
-    types: PropTypes.array.isRequired,
+    currentUserId: PropTypes.any,
+    users: PropTypes.object.isRequired,
+    types: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state) {
+function mapStateToProps({ users, types }) {
     return {
-        isLoading: state.user.isFetching,
-        user: state.user.data,
-        types: state.types,
+        isLoading: users.isFetching,
+        currentUserId: users.currentUserId,
+        users: users.byId,
+        types,
     };
 }
 
