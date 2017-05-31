@@ -9,7 +9,7 @@ import App from '../components/App';
 
 class AppContainer extends Component {
     componentDidMount() {
-        if (!this.props.user) {
+        if (!this.props.currentUserId) {
             this.props.dispatch(fetchUser());
         }
     }
