@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { fetchUser, addUser } from '../actions';
+import { fetchUser, addUser, removeUser } from '../actions';
 import { commaText } from '../helpers/text';
 
 import App from '../components/App';
@@ -14,10 +14,15 @@ class AppContainer extends Component {
         }
     }
 
-    addUserById = id => {
+    addCurrentUserToType = id => {
         const { dispatch, currentUserId } = this.props;
         dispatch(addUser(currentUserId, id));
         dispatch(fetchUser());
+    };
+
+    removeUserFromType = (userId, id) => {
+        const { dispatch } = this.props;
+        dispatch(removeUser(userId, id));
     };
 
     render() {
@@ -42,7 +47,8 @@ class AppContainer extends Component {
                 users={users}
                 types={types}
                 title={title}
-                handleClick={this.addUserById}
+                handleClickAdd={this.addCurrentUserToType}
+                handleClickRemove={this.removeUserFromType}
             />
         );
     }

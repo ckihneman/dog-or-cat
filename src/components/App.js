@@ -12,7 +12,8 @@ export default function App({
     users,
     types,
     title,
-    handleClick,
+    handleClickAdd,
+    handleClickRemove,
 }) {
     if (!user) {
         return <Title title={title} />;
@@ -29,7 +30,7 @@ export default function App({
                         <PersonButton
                             key={typeId}
                             text={`${type.name} Person`}
-                            onClick={() => handleClick(typeId)}
+                            onClick={() => handleClickAdd(typeId)}
                             className={`PersonButton--${typeId}`}
                             disabled={isLoading}
                         />
@@ -45,6 +46,8 @@ export default function App({
                             title={`${type.name} People`}
                             userIds={type.userIds}
                             users={users}
+                            id={typeId}
+                            onClickRemove={handleClickRemove}
                         />
                     );
                 })}

@@ -1,6 +1,7 @@
 export const REQUEST_USER = 'REQUEST_USER';
 export const RECEIVE_USER = 'RECEIVE_USER';
 export const ADD_USER = 'ADD_USER';
+export const REMOVE_USER = 'REMOVE_USER';
 
 function requestUser() {
     return {
@@ -30,6 +31,14 @@ export function fetchUser() {
 export function addUser(userId, id) {
     return {
         type: ADD_USER,
+        userId,
+        id,
+    };
+}
+
+export function removeUser(userId, id) {
+    return {
+        type: REMOVE_USER,
         userId,
         id,
     };
