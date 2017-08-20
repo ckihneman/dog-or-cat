@@ -2,14 +2,12 @@ import React from 'react';
 
 import './UserInfo.css';
 
-export default function UserInfo({ user, imageSize = 'thumbnail', isLoading }) {
+export default function UserInfo({user, imageSize = 'thumbnail', isLoading}) {
     if (isLoading) {
         return (
             <div className="UserInfo  is-loading">
-                <div className="UserInfo__name">
-                    Finding a user...
-                </div>
-                <div className="UserInfo__img UserInfo__img--hold"></div>
+                <div className="UserInfo__name">Finding a user...</div>
+                <div className="UserInfo__img UserInfo__img--hold" />
             </div>
         );
     }

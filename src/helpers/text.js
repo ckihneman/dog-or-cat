@@ -1,5 +1,5 @@
 export function commaText(items, andOr) {
-    const { length } = items;
+    const {length} = items;
     return items
         .map((item, index) => {
             if (index === 0) {
