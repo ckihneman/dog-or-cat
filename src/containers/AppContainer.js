@@ -71,20 +71,4 @@ function getUsersByType(userIds, users) {
     return userIds.map(userId => users[userId]);
 }
 
-// AppContainer.propTypes = {
-//     isLoading: PropTypes.bool.isRequired,
-//     currentUserId: PropTypes.any,
-//     users: PropTypes.object.isRequired,
-//     types: PropTypes.object.isRequired,
-// };
-
-// function mapStateToProps({ users, types }) {
-//     return {
-//         isLoading: users.isFetching,
-//         currentUserId: users.currentUserId,
-//         users: users.byId,
-//         types,
-//     };
-// }
-
 export default connect(mapStateToProps)(AppContainer);
