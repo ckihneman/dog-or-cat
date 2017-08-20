@@ -23,23 +23,25 @@ export function fetchUser() {
         return fetch('https://randomuser.me/api/')
             .then(response => response.json())
             .then(data => {
-                dispatch(receiveUser(data.results[0]));
+                const user = data.results[0];
+                user['id'] = user.email;
+                dispatch(receiveUser(user));
             });
     };
 }
 
-export function addUser(userId, id) {
+export function addUser(userId, typeId) {
     return {
         type: ADD_USER,
         userId,
-        id,
+        typeId,
     };
 }
 
-export function removeUser(userId, id) {
+export function removeUser(userId, typeId) {
     return {
         type: REMOVE_USER,
         userId,
-        id,
+        typeId,
     };
 }

@@ -1,6 +1,6 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 
-import { REQUEST_USER, RECEIVE_USER, ADD_USER, REMOVE_USER } from './actions';
+import {REQUEST_USER, RECEIVE_USER, ADD_USER, REMOVE_USER} from './actions';
 
 function users(
     state = {
@@ -18,13 +18,13 @@ function users(
             };
 
         case RECEIVE_USER:
-            const { user } = action;
+            const {user} = action;
             return {
                 isFetching: false,
-                currentUserId: user.email,
+                currentUserId: user.id,
                 byId: {
                     ...state.byId,
-                    [user.email]: user,
+                    [user.id]: user,
                 },
             };
 
@@ -57,12 +57,12 @@ function types(
     },
     action
 ) {
-    const entity = state[action.id];
+    const entity = state[action.typeId];
     switch (action.type) {
         case ADD_USER:
             return {
                 ...state,
-                [action.id]: {
+                [action.typeId]: {
                     ...entity,
                     userIds: [...entity.userIds, action.userId],
                 },
@@ -71,11 +71,9 @@ function types(
         case REMOVE_USER:
             return {
                 ...state,
-                [action.id]: {
+                [action.typeId]: {
                     ...entity,
-                    userIds: entity.userIds.filter(
-                        userId => action.userId !== userId
-                    ),
+                    userIds: entity.userIds.filter(userId => action.userId !== userId),
                 },
             };
 

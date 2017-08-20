@@ -2,10 +2,10 @@ import React from 'react';
 
 import './PersonButton.css';
 
-export default function PersonButton({ onClick, className, disabled, text }) {
+export default function PersonButton({listId, text, onClick, disabled}) {
     return (
         <button
-            className={`PersonButton ${className}`}
+            className={`PersonButton PersonButton--${listId}`}
             onClick={onClick}
             disabled={disabled}
         >

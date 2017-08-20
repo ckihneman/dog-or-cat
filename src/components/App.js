@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { commaText } from '../helpers/text';
-
 import Flex from './Flex';
 import Title from './Title';
 import UserInfo from './UserInfo';
@@ -10,25 +8,14 @@ import PersonButton from './PersonButton';
 
 export default function App({
     isLoading,
-    currentUserId,
-    users,
-    types,
+    title,
+    currentUser,
+    dogPeople,
+    catPeople,
+    ratPeople,
     handleClickAdd,
     handleClickRemove,
 }) {
-    const currentUser = users[currentUserId];
-    const namesText = commaText(
-        Object.keys(types).map(type => types[type].name),
-        'or'
-    );
-
-    let title;
-    if (!currentUser || isLoading) {
-        title = `Finding ${namesText} people...`;
-    } else {
-        title = `Is ${currentUser.name.first} a ${namesText} person?`;
-    }
-
     if (!currentUser) {
         return <Title title={title} />;
     }
@@ -36,39 +23,46 @@ export default function App({
     return (
         <div>
             <Title title={title} />
-            <UserInfo
-                user={currentUser}
-                imageSize="large"
-                isLoading={isLoading}
-            />
+            <UserInfo user={currentUser} imageSize="large" isLoading={isLoading} />
             <Flex>
-                {Object.keys(types).map(typeId => {
-                    const type = types[typeId];
-                    return (
-                        <PersonButton
-                            key={typeId}
-                            text={`${type.name} Person`}
-                            onClick={() => handleClickAdd(typeId)}
-                            className={`PersonButton--${typeId}`}
-                            disabled={isLoading}
-                        />
-                    );
-                })}
+                <PersonButton
+                    listId="dog"
+                    text="Dog Person"
+                    onClick={() => handleClickAdd('dog')}
+                    disabled={isLoading}
+                />
+                <PersonButton
+                    listId="cat"
+                    text="Cat Person"
+                    onClick={() => handleClickAdd('cat')}
+                    disabled={isLoading}
+                />
+                <PersonButton
+                    listId="rat"
+                    text="Rat Person"
+                    onClick={() => handleClickAdd('rat')}
+                    disabled={isLoading}
+                />
             </Flex>
             <Flex>
-                {Object.keys(types).map(typeId => {
-                    const type = types[typeId];
-                    return (
-                        <UserList
-                            key={typeId}
-                            title={`${type.name} People`}
-                            userIds={type.userIds}
-                            users={users}
-                            id={typeId}
-                            handleClickRemove={handleClickRemove}
-                        />
-                    );
-                })}
+                <UserList
+                    listId="dog"
+                    title="Dog People"
+                    users={dogPeople}
+                    handleClickRemove={handleClickRemove}
+                />
+                <UserList
+                    listId="cat"
+                    title="Cat People"
+                    users={catPeople}
+                    handleClickRemove={handleClickRemove}
+                />
+                <UserList
+                    listId="rat"
+                    title="Rat People"
+                    users={ratPeople}
+                    handleClickRemove={handleClickRemove}
+                />
             </Flex>
         </div>
     );
