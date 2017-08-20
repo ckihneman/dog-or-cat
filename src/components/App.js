@@ -8,46 +8,61 @@ import PersonButton from './PersonButton';
 
 export default function App({
     isLoading,
-    user,
-    users,
-    types,
     title,
-    handleClick,
+    currentUser,
+    dogPeople,
+    catPeople,
+    ratPeople,
+    addCurrentUserToType,
+    removeUserFromType,
 }) {
-    if (!user) {
+    if (!currentUser) {
         return <Title title={title} />;
     }
 
     return (
         <div>
             <Title title={title} />
-            <UserInfo user={user} imageSize="large" isLoading={isLoading} />
+            <UserInfo user={currentUser} imageSize="large" isLoading={isLoading} />
             <Flex>
-                {Object.keys(types).map(typeId => {
-                    const type = types[typeId];
-                    return (
-                        <PersonButton
-                            key={typeId}
-                            text={`${type.name} Person`}
-                            onClick={() => handleClick(typeId)}
-                            className={`PersonButton--${typeId}`}
-                            disabled={isLoading}
-                        />
-                    );
-                })}
+                <PersonButton
+                    listId="dog"
+                    text="Dog Person"
+                    onClick={() => addCurrentUserToType('dog')}
+                    disabled={isLoading}
+                />
+                <PersonButton
+                    listId="cat"
+                    text="Cat Person"
+                    onClick={() => addCurrentUserToType('cat')}
+                    disabled={isLoading}
+                />
+                <PersonButton
+                    listId="rat"
+                    text="Rat Person"
+                    onClick={() => addCurrentUserToType('rat')}
+                    disabled={isLoading}
+                />
             </Flex>
             <Flex>
-                {Object.keys(types).map(typeId => {
-                    const type = types[typeId];
-                    return (
-                        <UserList
-                            key={typeId}
-                            title={`${type.name} People`}
-                            userIds={type.userIds}
-                            users={users}
-                        />
-                    );
-                })}
+                <UserList
+                    listId="dog"
+                    title="Dog People"
+                    users={dogPeople}
+                    removeUserFromType={removeUserFromType}
+                />
+                <UserList
+                    listId="cat"
+                    title="Cat People"
+                    users={catPeople}
+                    removeUserFromType={removeUserFromType}
+                />
+                <UserList
+                    listId="rat"
+                    title="Rat People"
+                    users={ratPeople}
+                    removeUserFromType={removeUserFromType}
+                />
             </Flex>
         </div>
     );

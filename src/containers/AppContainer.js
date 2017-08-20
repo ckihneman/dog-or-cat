@@ -1,48 +1,43 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { fetchUser, addUser } from '../actions';
-import { commaText } from '../helpers/text';
+import {fetchUser, addUser, removeUser} from '../actions';
+import {
+    isLoadingSelector,
+    titleSelector,
+    currentUserSelector,
+    dogPeopleSelector,
+    catPeopleSelector,
+    ratPeopleSelector,
+} from '../selectors';
 
 import App from '../components/App';
 
 class AppContainer extends Component {
     componentDidMount() {
-        if (!this.props.user) {
+        if (!this.props.currentUser) {
             this.props.dispatch(fetchUser());
         }
     }
 
-    addUserById = id => {
-        const { dispatch, currentUserId } = this.props;
-        dispatch(addUser(currentUserId, id));
+    addCurrentUserToType = typeId => {
+        const {dispatch, currentUser} = this.props;
+        dispatch(addUser(currentUser.id, typeId));
         dispatch(fetchUser());
     };
 
+    removeUserFromType = (userId, typeId) => {
+        const {dispatch} = this.props;
+        dispatch(removeUser(userId, typeId));
+    };
+
     render() {
-        const { isLoading, currentUserId, users, types } = this.props;
-        const currentUser = users[currentUserId];
-        const namesText = commaText(
-            Object.keys(types).map(type => types[type].name),
-            'or'
-        );
-
-        let title;
-        if (!currentUser || isLoading) {
-            title = `Finding ${namesText} people...`;
-        } else {
-            title = `Is ${currentUser.name.first} a ${namesText} person?`;
-        }
-
         return (
             <App
-                isLoading={isLoading}
-                user={currentUser}
-                users={users}
-                types={types}
-                title={title}
-                handleClick={this.addUserById}
+                {...this.props}
+                addCurrentUserToType={this.addCurrentUserToType}
+                removeUserFromType={this.removeUserFromType}
             />
         );
     }
@@ -50,17 +45,21 @@ class AppContainer extends Component {
 
 AppContainer.propTypes = {
     isLoading: PropTypes.bool.isRequired,
-    currentUserId: PropTypes.any,
-    users: PropTypes.object.isRequired,
-    types: PropTypes.object.isRequired,
+    title: PropTypes.string.isRequired,
+    currentUser: PropTypes.any,
+    dogPeople: PropTypes.array.isRequired,
+    catPeople: PropTypes.array.isRequired,
+    ratPeople: PropTypes.array.isRequired,
 };
 
-function mapStateToProps({ users, types }) {
+function mapStateToProps(state) {
     return {
-        isLoading: users.isFetching,
-        currentUserId: users.currentUserId,
-        users: users.byId,
-        types,
+        isLoading: isLoadingSelector(state),
+        title: titleSelector(state),
+        currentUser: currentUserSelector(state),
+        dogPeople: dogPeopleSelector(state),
+        catPeople: catPeopleSelector(state),
+        ratPeople: ratPeopleSelector(state),
     };
 }
 

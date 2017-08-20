@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React, {Component} from 'react';
+import {Provider} from 'react-redux';
 
 import rootReducer from '../reducers';
-import { loadState, saveState } from '../localStorage';
+import {loadState, saveState} from '../localStorage';
 import configureStore from '../configureStore';
 import AppContainer from './AppContainer';
 

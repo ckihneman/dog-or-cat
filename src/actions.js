@@ -1,6 +1,7 @@
 export const REQUEST_USER = 'REQUEST_USER';
 export const RECEIVE_USER = 'RECEIVE_USER';
 export const ADD_USER = 'ADD_USER';
+export const REMOVE_USER = 'REMOVE_USER';
 
 function requestUser() {
     return {
@@ -22,15 +23,25 @@ export function fetchUser() {
         return fetch('https://randomuser.me/api/')
             .then(response => response.json())
             .then(data => {
-                dispatch(receiveUser(data.results[0]));
+                const user = data.results[0];
+                user['id'] = user.email;
+                dispatch(receiveUser(user));
             });
     };
 }
 
-export function addUser(userId, id) {
+export function addUser(userId, typeId) {
     return {
         type: ADD_USER,
         userId,
-        id,
+        typeId,
+    };
+}
+
+export function removeUser(userId, typeId) {
+    return {
+        type: REMOVE_USER,
+        userId,
+        typeId,
     };
 }
