@@ -4,7 +4,7 @@ import UserInfo from './UserInfo';
 
 import './UserList.css';
 
-export default function UserList({listId, title, users, handleClickRemove}) {
+export default function UserList({listId, title, users, removeUserFromType}) {
     let userNodes;
     if (!users.length) {
         userNodes = <li>No one yet...</li>;
@@ -12,7 +12,7 @@ export default function UserList({listId, title, users, handleClickRemove}) {
         userNodes = users.map(user => {
             return (
                 <li className="UserList__item" key={user.id}>
-                    <button onClick={() => handleClickRemove(user.id, listId)}>
+                    <button onClick={() => removeUserFromType(user.id, listId)}>
                         Remove
                     </button>
                     <UserInfo user={user} />

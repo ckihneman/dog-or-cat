@@ -13,8 +13,8 @@ export default function App({
     dogPeople,
     catPeople,
     ratPeople,
-    handleClickAdd,
-    handleClickRemove,
+    addCurrentUserToType,
+    removeUserFromType,
 }) {
     if (!currentUser) {
         return <Title title={title} />;
@@ -28,19 +28,19 @@ export default function App({
                 <PersonButton
                     listId="dog"
                     text="Dog Person"
-                    onClick={() => handleClickAdd('dog')}
+                    onClick={() => addCurrentUserToType('dog')}
                     disabled={isLoading}
                 />
                 <PersonButton
                     listId="cat"
                     text="Cat Person"
-                    onClick={() => handleClickAdd('cat')}
+                    onClick={() => addCurrentUserToType('cat')}
                     disabled={isLoading}
                 />
                 <PersonButton
                     listId="rat"
                     text="Rat Person"
-                    onClick={() => handleClickAdd('rat')}
+                    onClick={() => addCurrentUserToType('rat')}
                     disabled={isLoading}
                 />
             </Flex>
@@ -49,19 +49,19 @@ export default function App({
                     listId="dog"
                     title="Dog People"
                     users={dogPeople}
-                    handleClickRemove={handleClickRemove}
+                    removeUserFromType={removeUserFromType}
                 />
                 <UserList
                     listId="cat"
                     title="Cat People"
                     users={catPeople}
-                    handleClickRemove={handleClickRemove}
+                    removeUserFromType={removeUserFromType}
                 />
                 <UserList
                     listId="rat"
                     title="Rat People"
                     users={ratPeople}
-                    handleClickRemove={handleClickRemove}
+                    removeUserFromType={removeUserFromType}
                 />
             </Flex>
         </div>

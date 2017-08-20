@@ -29,8 +29,8 @@ class AppContainer extends Component {
         return (
             <App
                 {...this.props}
-                handleClickAdd={this.addCurrentUserToType}
-                handleClickRemove={this.removeUserFromType}
+                addCurrentUserToType={this.addCurrentUserToType}
+                removeUserFromType={this.removeUserFromType}
             />
         );
     }
