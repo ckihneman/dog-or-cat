@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {createSelector} from 'reselect';
 
 import {fetchUser, addUser, removeUser} from '../actions';
 import {commaText} from '../helpers/text';
@@ -45,30 +46,52 @@ AppContainer.propTypes = {
     ratPeople: PropTypes.array.isRequired,
 };
 
-function mapStateToProps({users, types}) {
-    const isLoading = users.isFetching;
-    const currentUser = users.byId[users.currentUserId];
-    const namesText = commaText(Object.keys(types).map(type => types[type].name), 'or');
+const isLoadingSelector = ({users}) => users.isFetching;
+const currentUserSelector = ({users}) => users.byId[users.currentUserId];
+const typeNamesSelector = ({types}) => Object.keys(types).map(type => types[type].name);
 
-    let title;
-    if (!currentUser || isLoading) {
-        title = `Finding ${namesText} people...`;
-    } else {
-        title = `Is ${currentUser.name.first} a ${namesText} person?`;
+const titleSelector = createSelector(
+    isLoadingSelector,
+    currentUserSelector,
+    typeNamesSelector,
+    (isLoading, currentUser, typeNames) => {
+        const namesText = commaText(typeNames, 'or');
+
+        let title;
+        if (!currentUser || isLoading) {
+            title = `Finding ${namesText} people...`;
+        } else {
+            title = `Is ${currentUser.name.first} a ${namesText} person?`;
+        }
+
+        return title;
     }
+);
 
+const usersByIdSelector = ({users}) => users.byId;
+const dogIdSelector = ({types}) => types.dog.userIds;
+const catIdSelector = ({types}) => types.cat.userIds;
+const ratIdSelector = ({types}) => types.rat.userIds;
+
+const dogPeopleSelector = createSelector(usersByIdSelector, dogIdSelector, (users, ids) =>
+    ids.map(id => users[id])
+);
+const catPeopleSelector = createSelector(usersByIdSelector, catIdSelector, (users, ids) =>
+    ids.map(id => users[id])
+);
+const ratPeopleSelector = createSelector(usersByIdSelector, ratIdSelector, (users, ids) =>
+    ids.map(id => users[id])
+);
+
+function mapStateToProps(state) {
     return {
-        isLoading,
-        title,
-        currentUser,
-        dogPeople: getUsersByType(types.dog.userIds, users.byId),
-        catPeople: getUsersByType(types.cat.userIds, users.byId),
-        ratPeople: getUsersByType(types.rat.userIds, users.byId),
+        isLoading: isLoadingSelector(state),
+        title: titleSelector(state),
+        currentUser: currentUserSelector(state),
+        dogPeople: dogPeopleSelector(state),
+        catPeople: catPeopleSelector(state),
+        ratPeople: ratPeopleSelector(state),
     };
-}
-
-function getUsersByType(userIds, users) {
-    return userIds.map(userId => users[userId]);
 }
 
 export default connect(mapStateToProps)(AppContainer);
